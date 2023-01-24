@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/models/tasks.dart';
 import 'package:todo_app/screens/add_task_screen.dart';
 import 'package:todo_app/widgets/tasks_list.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
+
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [
+    Task(isDone: false, name: 'Buy milk'),
+    Task(isDone: false, name: 'Buy eggs'),
+    Task(isDone: false, name: 'Buy bread'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +33,8 @@ class TasksScreen extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 30,
                   child: Icon(
@@ -31,10 +43,10 @@ class TasksScreen extends StatelessWidget {
                     color: Colors.lightBlueAccent,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   'Todoey',
                   style: TextStyle(
                     color: Colors.white,
@@ -43,8 +55,8 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 Tasks',
-                  style: TextStyle(
+                  '${tasks.length} Tasks',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
@@ -66,7 +78,9 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              child: TasksList(),
+              child: TasksList(
+                tasks: tasks,
+              ),
             ),
           )
         ],
@@ -82,7 +96,17 @@ class TasksScreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      child: AddTask(),
+                      child: AddTask(
+                        addTaskCallback: (newTaskTitle) {
+                          setState(() {
+                            tasks.add(Task(
+                              isDone: false,
+                              name: newTaskTitle,
+                            ));
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ));
         },
