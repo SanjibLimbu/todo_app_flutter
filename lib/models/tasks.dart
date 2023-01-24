@@ -2,7 +2,7 @@ class Task {
   final String name;
   bool isDone;
   Task({
-    required this.isDone,
+    this.isDone=false,
     required this.name,
   });
 
